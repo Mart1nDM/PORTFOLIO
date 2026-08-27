@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Fira+Code:wght@400;600&display=swap');
+
+/* --- ESTILOS GENERALES Y PARA CELULARES (MOBILE FIRST) --- */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Permite que el body crezca y scrollee de forma natural en el móvil */
+}
+
+.bg {
+    background: linear-gradient(to left, #199bd3, #0c4cb2);
+}
+
+.navbarc {
+    background-color: #0c4cb2;
+    text-decoration-color: #ffffff;
+    flex-shrink: 0;
+}
+
+.tipografia {
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+    font-family: 'Courier Prime', monospace;
+    color: #ffffff;
+}
+
+.tipografia-tech {
+    font-family: 'Fira Code', monospace;
+}
+
+/* En celular, la imagen ocupa el 40vh, ancla la parte superior y se difumina hacia abajo */
+.hero-img {
+    object-fit: cover;
+    object-position: top; /* Asegura que la cara no se corte en el móvil */
+    width: 100%;
+    height: 40vh; 
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+}
+
+.btn-outline-light {
+    transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Contenedores flexibles para acomodar el alto */
+.content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper > .row {
+    flex-grow: 1;
+}
+
+/* Ajuste de márgenes del footer para celulares */
+.footerc {
+    background-color: #0c4cb2;
+    margin-left: -1rem; 
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+}
+
+.social-icon {
+    transition: opacity 0.3s;
+}
+
+.social-icon:hover {
+    opacity: 0.6;
+}
+
+.cursor-blink {
+    animation: blink-animation 1s steps(2, start) infinite;
+}
+
+.tabla-custom{
+    background-color: rgba(66, 118, 200, 0.8) !important;
+}
+.tabla-custom td, 
+.tabla-custom th {
+    background-color: rgba(66, 118, 200, 0.8) !important;
+    color: white !important; 
+}
+.tabla-custom tbody tr:hover td {
+    background-color: rgba(60, 6, 145, 0.5) !important; 
+}
+.mismo-ancho{
+    width: 33.33% !important;
+}
+
+.formulario-color {
+    background: #31d2f2!important;
+    color: rgb(4, 4, 4) !important; 
+}
+
+@keyframes blink-animation {
+    to {
+        visibility: hidden;
+    }
+}
+
+/* --- ESTILOS EXCLUSIVOS PARA COMPUTADORAS (TABLETS Y PC) --- */
+@media (min-width: 768px) {
+    body {
+        height: 100vh; /* Bloqueamos la altura total estrictamente en PC */
+        overflow: hidden; /* Evitamos el scroll global */
+    }
+
+    .content-wrapper {
+        overflow: hidden; /* Obliga al contenedor a no crecer más allá de la pantalla */
+    }
+
+    .content-wrapper > .row {
+        height: 100%; /* La fila ocupa el 100% del espacio para activar el scroll interno */
+    }
+
+    /* Vuelve al comportamiento de la imagen fija a la izquierda */
+    .fixed-img-col {
+        height: 100%;
+    }
+
+    .hero-img {
+        height: 100%;
+        object-position: center; /* En PC la centramos normalmente */
+        -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+        mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .scrollable-col {
+        height: 100%;
+        overflow-y: auto; /* Activa el scroll SOLAMENTE en la columna de texto */
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+    }
+
+    /* Estiliza la barra de desplazamiento solo en PC */
+    .scrollable-col::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .scrollable-col::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.4);
+        border-radius: 10px;
+    }
+
+    /* Ajuste de márgenes del footer para PC compensando el px-5 */
+    .footerc {
+        margin-left: -3rem;
+        margin-right: -3rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
