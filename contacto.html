@@ -60,7 +60,8 @@
                         > Contactate<span class="cursor-blink">_</span>
                     </p>
                     
-                    <form action="#" method="POST" class="w-100">
+                    <!-- AGREGADO ID AL FORMULARIO -->
+                    <form id="formulario-contacto" action="#" method="POST" class="w-100">
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label for="nombre" class="form-label fw-bold">Nombre</label>
@@ -92,7 +93,10 @@
                             <textarea class="form-control formulario-color border-secondary tipografia-tech p-3" id="mensaje" rows="5" placeholder="Contame más sobre tu idea o proyecto..." required></textarea>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-info px-5 py-3 fs-5 fw-bold mt-2">
+                            <!-- DIV PARA MOSTRAR MENSAJE DE ÉXITO O ERROR -->
+                            <div id="estado-mensaje" class="mb-3 fs-5 tipografia-tech text-start"></div>
+                            <!-- AGREGADO ID AL BOTÓN -->
+                            <button type="submit" id="btn-enviar" class="btn btn-info px-5 py-3 fs-5 fw-bold mt-2">
                                 Enviar Mensaje <i class="bi bi-send ms-2"></i>
                             </button>
                         </div>
@@ -118,5 +122,64 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SCRIPT DE CONEXIÓN AL BACKEND -->
+    <script>
+        document.getElementById('formulario-contacto').addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+            
+            const btn = document.getElementById('btn-enviar');
+            const estado = document.getElementById('estado-mensaje');
+            const contenidoOriginalBtn = btn.innerHTML;
+            
+            // Efecto de carga
+            btn.innerHTML = 'Procesando... <i class="bi bi-arrow-repeat"></i>';
+            btn.disabled = true;
+            estado.innerHTML = '';
+
+            // Recolectamos los datos para Web3Forms
+            const motivo = document.getElementById('motivo').value;
+            const asunto = document.getElementById('asunto').value;
+
+            const datos = {
+                // AQUÍ PEGAS TU LLAVE DE WEB3FORMS:
+                access_key: '3fb9c111-d00c-48b6-b32c-cc5f4d453747', 
+                
+                // Campos estándar que lee Web3Forms
+                name: document.getElementById('nombre').value,
+                email: document.getElementById('email').value,
+                // Unimos el motivo y el asunto para el título del correo que recibirás
+                subject: `Portfolio [${motivo}]: ${asunto}`,
+                message: document.getElementById('mensaje').value,
+                
+                // Campo extra opcional
+                Motivo_Seleccionado: motivo 
+            };
+
+            try {
+                // Llamamos a la API de Web3Forms
+                const respuesta = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                if (respuesta.ok) {
+                    estado.innerHTML = '<span class="text-info">> Mensaje enviado con éxito. Te responderé pronto.</span>';
+                    document.getElementById('formulario-contacto').reset();
+                } else {
+                    estado.innerHTML = '<span class="text-danger">> Error al enviar. Por favor, intenta de nuevo.</span>';
+                }
+            } catch (error) {
+                estado.innerHTML = '<span class="text-danger">> Error crítico: Revisa tu conexión a internet.</span>';
+            } finally {
+                btn.innerHTML = contenidoOriginalBtn;
+                btn.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>
